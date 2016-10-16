@@ -1,21 +1,25 @@
-var expect    = require("chai").expect;
-var request = require("request");
-var app = require("../index.js");
+var request = require('supertest');
 
-describe("Main web route", function() {
+describe('loading express', function () {
+  var server;
 
-  var url = "http://localhost:3000";
-
-  it("returns status 200", function() {
-    request(url, function(error, response, body) {
-      expect(response.statusCode).to.equal(200);
-    });
+  beforeEach(function () {
+    server = require('../index');
   });
 
-  it("prints 'hello world'", function() {
-    request(url, function(error, response, body) {
-      expect(body).to.equal("hello world");
-    });
+  afterEach(function () {
+    server.close();
   });
 
+  it('responds to /', function testSlash(done) {
+    request(server)
+      .get('/')
+      .expect(200, done);
+  });
+
+  it('404 everything else', function testPath(done) {
+    request(server)
+      .get('/foo/bar')
+      .expect(403, done);
+  });
 });

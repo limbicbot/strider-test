@@ -1,10 +1,13 @@
-var express = require('express')
-var app = express()
+var express = require('express');
+var app = express();
 
 app.get('/', function (req, res) {
-  res.send('Hello World')
-})
+  res.status(200).send('ok');
+});
 
-app.listen(3001)
+var server = app.listen(3001, function () {
+  var port = server.address().port;
+  console.log('Example app listening at http://localhost:%s', port);
+});
 
-console.log('Running on http://localhost:3001/');
+module.exports = server;
